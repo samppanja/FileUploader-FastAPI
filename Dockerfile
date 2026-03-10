@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM ubuntu:24.04
 
-ARG UV_VERSION=0.6.3
+ARG UV_VERSION=0.10.9
 
 WORKDIR /app
 
