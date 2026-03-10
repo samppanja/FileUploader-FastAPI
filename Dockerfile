@@ -1,12 +1,15 @@
 # syntax=docker/dockerfile:1
-FROM python:3.9
+FROM ubuntu:24.04
 
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
-
-RUN pip3 install --no-cache-dir --upgrade -r /app/requirements.txt
-
+ENV PATH="/root/.local/bin/:$PATH"
 COPY . /app
 
-CMD [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"] 
+RUN apt-get update && apt-get install -y curl ca-certificates libmagic1 && curl -LsSf https://astral.sh/uv/install.sh | sh \
+&& apt-get clean && rm -rf /var/lib/apt/lists/* \
+&& uv sync --no-dev
+
+
+
+CMD [ "uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"] 
